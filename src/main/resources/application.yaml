@@ -1,0 +1,22 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: resource_service
+            uri: lb://resource-service
+            predicates:
+              - Path=/resources/**
+          - id: song_service
+            uri: lb://song-service
+            predicates:
+              - Path=/songs/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL}
