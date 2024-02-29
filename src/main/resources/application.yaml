@@ -3,24 +3,28 @@ server:
 spring:
   application:
     name: api-gateway
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${JWT_ISSUER_URI}
   cloud:
     gateway:
-      mvc:
-        routes:
-          - id: resource_service
-            uri: lb://resource-service
-            predicates:
-              - Path=/resources/**
-          - id: song_service
-            uri: lb://song-service
-            predicates:
-              - Path=/songs/**
-          - id: kibana-redirect
-            uri: http://localhost:5601
-            predicates:
-              - Path=/kibana/**
-            filters:
-              - RedirectTo=302, http://localhost:5601
+      routes:
+        - id: resource_service
+          uri: lb://resource-service
+          predicates:
+            - Path=/resources/**
+        - id: song_service
+          uri: lb://song-service
+          predicates:
+            - Path=/songs/**
+        - id: kibana_redirect
+          uri: http://localhost:5601
+          predicates:
+            - Path=/kibana/**
+          filters:
+            - RedirectTo=302, http://localhost:5601
 
 eureka:
   client:
